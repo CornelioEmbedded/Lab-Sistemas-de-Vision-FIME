@@ -1,28 +1,42 @@
-import cv2
-from time import sleep
+# using matplotlib and numpy
 
-PHOTO_1 = r"Practica_1\foto_prueba.png"
+import matplotlib.image as img
+import numpy as np
 
-def adq_preprocess_photo(path, type='color', color='bgr'):
-    type_dict = {'gray': cv2.IMREAD_REDUCED_GRAYSCALE_2,
-            'color': cv2.IMREAD_REDUCED_COLOR_2,
-            'unchanged': cv2.IMREAD_IGNORE_ORIENTATION}
-    
-    color_dict = {'bgr': cv2.COLOR_BGR2HSV,
-                  'gray': cv2.COLOR_BGR2GRAY}
+# provide the location of image for reading
+image = img.imread("foto_5.png")
 
-    if type_dict['color']:
-        src = cv2.imread(path, type_dict[type])
-        img = cv2.cvtColor(src, color_dict[color])
-    else:
-        img = cv2.imread(path, type_dict[type])
+# determining the length of original image
+w, h = image.shape[:2]
+print(f'Width: {w}, Height: {h}')
 
-    try:
-        cv2.imshow("image", img)
-        cv2.waitKey(0)
-    except:
-        pass
-    cv2.destroyAllWindows()
+# xNew and yNew are new width and
+# height of image required
+# after scaling
+xNew = int(w * 1 / 10)
+yNew = int(h * 1 / 10)
 
+# calculating the scaling factor
+# work for more than 2 pixel
+xScale = xNew/(w-1)
+yScale = yNew/(h-1)
 
-adq_preprocess_photo(PHOTO_1, color='gray')
+# using numpy taking a matrix of xNew
+# width and yNew height with
+# 4 attribute [alpha, B, G, B] values
+
+newImage = np.zeros([xNew, yNew, 4])
+print(f'Width: {xNew}, Height: {yNew}')
+
+for i in range(xNew-1):
+    for j in range(yNew-1):
+        print(image[1 + int(i / xScale), 1 + int(j / yScale)])
+        newImage[i + 1, j + 1]= image[1 + int(i / xScale), 1 + int(j / yScale)]
+
+# np.save('matrix.npy', newImage)
+np.set_printoptions(threshold=np.inf)
+# matrix = str(np.load('matrix.npy'))
+# with open('matrix.txt', 'w') as f:
+#     f.write(matrix)
+# Save the image after scaling
+img.imsave('scaled.png', newImage)
