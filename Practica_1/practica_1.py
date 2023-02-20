@@ -25,17 +25,21 @@ def make_image_scale(photo:str, scale):
     np.set_printoptions(threshold=np.inf)
     img.imsave('scaled.png', newImage)
 
+def get_matrix():
+    new_image = Image.open("scaled.png")
+    image_array = np.array(new_image)
+    row = []
+    matrix=[]
+    for i in range(image_array.shape[0]):
+        for j in range(image_array.shape[1]):
+            pixel_value = image_array[i, j]
+            row.append(pixel_value[3])
+        matrix.append(row)
+
+    with open('matrix.txt', 'w') as file:
+        file.write(str(matrix))
+
 make_image_scale(IMAGE, 10)
+get_matrix()
 
-new_image = Image.open("scaled.png")
-image_array = np.array(new_image)
-row = []
-matrix=[]
-for i in range(image_array.shape[0]):
-    for j in range(image_array.shape[1]):
-        pixel_value = image_array[i, j]
-        row.append(pixel_value[3])
-    matrix.append(row)
 
-with open('matrix.txt', 'w') as file:
-    file.write(str(matrix))
