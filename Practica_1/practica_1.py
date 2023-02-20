@@ -1,42 +1,41 @@
-# using matplotlib and numpy
+# Processing images
 
 import matplotlib.image as img
 import numpy as np
+from PIL import Image
 
-# provide the location of image for reading
-image = img.imread("foto_5.png")
+IMAGE = "foto_4.png"
 
-# determining the length of original image
-w, h = image.shape[:2]
-print(f'Width: {w}, Height: {h}')
+def make_image_scale(photo:str, scale):
+    image = img.imread(photo)
+    w, h = image.shape[:2]
 
-# xNew and yNew are new width and
-# height of image required
-# after scaling
-xNew = int(w * 1 / 10)
-yNew = int(h * 1 / 10)
+    xNew = int(w * 1 / scale)
+    yNew = int(h * 1 / scale)
 
-# calculating the scaling factor
-# work for more than 2 pixel
-xScale = xNew/(w-1)
-yScale = yNew/(h-1)
+    xScale = xNew/(w-1)
+    yScale = yNew/(h-1)
 
-# using numpy taking a matrix of xNew
-# width and yNew height with
-# 4 attribute [alpha, B, G, B] values
+    newImage = np.zeros([xNew, yNew, 4])
 
-newImage = np.zeros([xNew, yNew, 4])
-print(f'Width: {xNew}, Height: {yNew}')
+    for i in range(xNew-1):
+        for j in range(yNew-1):
+            newImage[i + 1, j + 1]= image[1 + int(i / xScale), 1 + int(j / yScale)]
 
-for i in range(xNew-1):
-    for j in range(yNew-1):
-        print(image[1 + int(i / xScale), 1 + int(j / yScale)])
-        newImage[i + 1, j + 1]= image[1 + int(i / xScale), 1 + int(j / yScale)]
+    np.set_printoptions(threshold=np.inf)
+    img.imsave('scaled.png', newImage)
 
-# np.save('matrix.npy', newImage)
-np.set_printoptions(threshold=np.inf)
-# matrix = str(np.load('matrix.npy'))
-# with open('matrix.txt', 'w') as f:
-#     f.write(matrix)
-# Save the image after scaling
-img.imsave('scaled.png', newImage)
+make_image_scale(IMAGE, 10)
+
+new_image = Image.open("scaled.png")
+image_array = np.array(new_image)
+row = []
+matrix=[]
+for i in range(image_array.shape[0]):
+    for j in range(image_array.shape[1]):
+        pixel_value = image_array[i, j]
+        row.append(pixel_value[3])
+    matrix.append(row)
+
+with open('matrix.txt', 'w') as file:
+    file.write(str(matrix))
