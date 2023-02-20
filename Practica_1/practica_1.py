@@ -1,28 +1,41 @@
-import cv2
-from time import sleep
+# Processing images
 
-PHOTO_1 = r"Practica_1\foto_prueba.png"
+import matplotlib.image as img
+import numpy as np
+from PIL import Image
 
-def adq_preprocess_photo(path, type='color', color='bgr'):
-    type_dict = {'gray': cv2.IMREAD_REDUCED_GRAYSCALE_2,
-            'color': cv2.IMREAD_REDUCED_COLOR_2,
-            'unchanged': cv2.IMREAD_IGNORE_ORIENTATION}
-    
-    color_dict = {'bgr': cv2.COLOR_BGR2HSV,
-                  'gray': cv2.COLOR_BGR2GRAY}
+IMAGE = "foto_4.png"
 
-    if type_dict['color']:
-        src = cv2.imread(path, type_dict[type])
-        img = cv2.cvtColor(src, color_dict[color])
-    else:
-        img = cv2.imread(path, type_dict[type])
+def make_image_scale(photo:str, scale):
+    image = img.imread(photo)
+    w, h = image.shape[:2]
 
-    try:
-        cv2.imshow("image", img)
-        cv2.waitKey(0)
-    except:
-        pass
-    cv2.destroyAllWindows()
+    xNew = int(w * 1 / scale)
+    yNew = int(h * 1 / scale)
 
+    xScale = xNew/(w-1)
+    yScale = yNew/(h-1)
 
-adq_preprocess_photo(PHOTO_1, color='gray')
+    newImage = np.zeros([xNew, yNew, 4])
+
+    for i in range(xNew-1):
+        for j in range(yNew-1):
+            newImage[i + 1, j + 1]= image[1 + int(i / xScale), 1 + int(j / yScale)]
+
+    np.set_printoptions(threshold=np.inf)
+    img.imsave('scaled.png', newImage)
+
+make_image_scale(IMAGE, 10)
+
+new_image = Image.open("scaled.png")
+image_array = np.array(new_image)
+row = []
+matrix=[]
+for i in range(image_array.shape[0]):
+    for j in range(image_array.shape[1]):
+        pixel_value = image_array[i, j]
+        row.append(pixel_value[3])
+    matrix.append(row)
+
+with open('matrix.txt', 'w') as file:
+    file.write(str(matrix))
