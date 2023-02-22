@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "lab-sistemas-de-vision"
+version = "0.1.0"
+description = ""
+authors = ["Cornelio Posadas P <posadascornelio38@gmail.com>"]
+readme = "README.md"
+packages = [{include = "lab_sistemas_de_vision"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+opencv-python = "^4.7.0.68"
+matplotlib = "^3.7.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
