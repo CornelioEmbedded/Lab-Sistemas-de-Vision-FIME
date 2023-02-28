@@ -4,8 +4,6 @@ import matplotlib.image as img
 import numpy as np
 from PIL import Image
 
-IMAGE = "foto_4.png"
-
 def make_image_scale(photo:str, scale):
     image = img.imread(photo)
     w, h = image.shape[:2]
@@ -16,7 +14,7 @@ def make_image_scale(photo:str, scale):
     xScale = xNew/(w-1)
     yScale = yNew/(h-1)
 
-    newImage = np.zeros([xNew, yNew, 4])
+    newImage = np.zeros([xNew, yNew, 3])
 
     for i in range(xNew-1):
         for j in range(yNew-1):
@@ -38,8 +36,3 @@ def get_matrix():
 
     with open('matrix.txt', 'w') as file:
         file.write(str(matrix))
-
-make_image_scale(IMAGE, 10)
-get_matrix()
-
-
