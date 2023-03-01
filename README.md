@@ -1,3 +1,5 @@
-# Lab-Sistemas-de-Vision-FIME
+# Sistemas-de-Vision-FIME
 
-Basado en este [blog](https://www.geeksforgeeks.org/image-processing-without-opencv-python/)
+Basado en los siguientes blogs:
+- [GeekforGeeks](https://www.geeksforgeeks.org/image-processing-without-opencv-python/)
+- [MachineLearningKnow](https://machinelearningknowledge.ai/image-segmentation-in-python-opencv/)
