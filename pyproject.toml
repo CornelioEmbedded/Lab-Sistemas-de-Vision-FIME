@@ -12,6 +12,9 @@ opencv-python = "^4.7.0.68"
 matplotlib = "^3.7.0"
 
 
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.22.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
